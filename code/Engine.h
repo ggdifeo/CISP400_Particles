@@ -30,6 +30,10 @@ private:
 	// added title screen bool flag
 	bool m_titleScreen;
 
+	// added background texture / sprite for displaying background image (sprite)
+	Texture m_backgroundTexture;
+	Sprite m_backgroundSprite;
+
 public:
 	// The Engine constructor
 	Engine();

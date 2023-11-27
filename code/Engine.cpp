@@ -7,6 +7,15 @@
 // engine constructor
 Engine::Engine() : m_Window(VideoMode(1920, 1080), "Particles!!", Style::Default)
 {
+    // loads in the background texture 
+    if (!m_backgroundTexture.loadFromFile("background.jpg"))
+    {
+        cout << "Error loading background image!" << endl;
+    }
+
+    // now we're setting the texture for background sprite
+    m_backgroundSprite.setTexture(m_backgroundTexture);
+
     // added this in case font doesnt load for whatever reason
     if (!m_font.loadFromFile("font.ttf")) 
     {
@@ -98,6 +107,7 @@ void Engine::draw()
 
     if (m_titleScreen)
     {
+        m_Window.draw(m_backgroundSprite);
         m_Window.draw(m_titleText);
         m_Window.draw(m_startText);
     }
