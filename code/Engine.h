@@ -8,6 +8,9 @@ using namespace std;
 class Engine
 {
 private:
+	// font for engine.cpp
+	Font m_font;
+
 	// A regular RenderWindow
 	RenderWindow m_Window;
 
@@ -18,6 +21,14 @@ private:
 	void input();
 	void update(float dtAsSeconds);
 	void draw();
+
+	// adding this in so text can be accessed throughout all functions
+	Text m_text;
+	Text m_titleText;
+	Text m_startText;
+
+	// added title screen bool flag
+	bool m_titleScreen;
 
 public:
 	// The Engine constructor

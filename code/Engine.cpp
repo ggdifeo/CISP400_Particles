@@ -8,42 +8,86 @@
 Engine::Engine() : m_Window(VideoMode(1920, 1080), "Particles!!", Style::Default)
 {
     // added this in case font doesnt load for whatever reason
-    Font font;
-    if (!font.loadFromFile("font.ttf")) 
+    if (!m_font.loadFromFile("font.ttf")) 
     {
         // Displays message to user if font doesn't load
         cout << "Error loading font!" << endl;
-        // returns error and exits program
-        return -1;
     }
+
+    // creating m_text objects here 
+    m_text.setFont(m_font);
+    m_text.setCharacterSize(60); //Sets m_text size
+    m_text.setFillColor(Color::White); //Sets m_text color
+    m_text.setPosition(10, 10); //Positions m_text
+    
+    m_titleText.setFont(m_font);
+    m_titleText.setCharacterSize(250);
+    m_titleText.setFillColor(Color(210, 43, 41));
+    m_titleText.setOutlineColor(Color::White);
+    m_titleText.setOutlineThickness(2);
+    m_titleText.setPosition(150, 140);
+    m_titleText.setString("Particles"); //Adds title screen
+
+    m_startText.setFont(m_font);
+    m_startText.setCharacterSize(60);
+    m_startText.setFillColor(Color::White); 
+    m_startText.setPosition(500, 500);
+    m_startText.setString("PRESS ANY KEY TO PLAY!\n\nCREATED BY KARISSA & GABE");
+
+    // bool for titlescreen, true to display, false to dissapear
+    m_titleScreen = true;
 }
 
 // input function to handle user input
 void Engine::input()
 {
+    Event event;
+	while (m_Window.pollEvent(event))
+	{
+        if (event.type == Event::Closed)
+        {
+		    // quit the game when the window is closed
+			m_Window.close();
+        }
+			
+        // exits title screen ONLY if user presses a key (NO CLICKY)
+        if (event.type == Event::KeyPressed && m_titleScreen) 
+        {
+            m_titleScreen = false;
+        }
 
+        // If you press escape it exits the game
+        if (Keyboard::isKeyPressed(Keyboard::Escape))
+		{
+			m_Window.close();
+		}
+    }
 }
 
 // update function to update game state
 void Engine::update(float dtAsSeconds)
 {
-    // add code here
-
-
-    // loops through particles to update them
-    auto it = m_particles.begin();
-    while (it != m_particles.end())
+    if (!m_titleScreen)
     {
-        if (it->getTTL() > 0.0f)
+        // add code here
+
+        // loops through particles to update them
+        auto it = m_particles.begin();
+        while (it != m_particles.end())
         {
-            it->update(dtAsSeconds);
-            ++it;
-        }
-        else
-        {
-            it = m_particles.erase(it);
+            if (it->getTTL() > 0.0f)
+            {
+                it->update(dtAsSeconds);
+                ++it;
+            }
+            else
+            {
+                it = m_particles.erase(it);
+            }
         }
     }
+
+    
 }
 
 // draw function to draw out the program
@@ -52,42 +96,28 @@ void Engine::draw()
 {
     m_Window.clear();
 
-    // here add draw code for the engine
-
-    // loops through particles and draws them out, i think we've already learned how to add range based for loops but let me know if you wanna do it another way
-    for (const auto& particle : m_particles)
+    if (m_titleScreen)
     {
-        m_Window.draw(particle);
+        m_Window.draw(m_titleText);
+        m_Window.draw(m_startText);
     }
+    else
+    {
+        // here add draw code for the engine
 
+        // loops through particles and draws them out, i think we've already learned how to add range based for loops but let me know if you wanna do it another way
+        for (const auto& particle : m_particles)
+        {
+            m_Window.draw(particle);
+        } 
+    }
+    
     m_Window.display();
-
 }
 
 // run function to run program loop
 void Engine::run()
 {
-    // creating text objects here 
-    Text text;
-
-    text.setFont(font);
-    text.setCharacterSize(60); //Sets text size
-    text.setFillColor(Color::White); //Sets text color
-    text.setPosition(10, 10); //Positions text
-
-    Text titleText;
-    
-    titleText.setFont(font);
-    titleText.setCharacterSize(250);
-    titleText.setFillColor(Color(210, 43, 41));
-    titleText.setOutlineColor(Color::White);
-    titleText.setOutlineThickness(2);
-    titleText.setPosition(150, 140);
-    titleText.setString("Particles"); //Adds title screen
-
-    // bool for titlescreen
-    bool titleScreen = true;
-
     // constructs the clock object to track time per frame
     Clock clock;
 
