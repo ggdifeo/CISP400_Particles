@@ -8,7 +8,7 @@
 Engine::Engine() : m_Window(VideoMode(1920, 1080), "Particles!!", Style::Default)
 {
     // loads in the background texture 
-    if (!m_backgroundTexture.loadFromFile("background.jpg"))
+    if (!m_backgroundTexture.loadFromFile("background.png"))
     {
         cout << "Error loading background image!" << endl;
     }
@@ -16,6 +16,7 @@ Engine::Engine() : m_Window(VideoMode(1920, 1080), "Particles!!", Style::Default
     // now we're setting the texture for background sprite
     m_backgroundSprite.setTexture(m_backgroundTexture);
 
+    
     // added this in case font doesnt load for whatever reason
     if (!m_font.loadFromFile("font.ttf")) 
     {
@@ -30,18 +31,18 @@ Engine::Engine() : m_Window(VideoMode(1920, 1080), "Particles!!", Style::Default
     m_text.setPosition(10, 10); //Positions m_text
     
     m_titleText.setFont(m_font);
-    m_titleText.setCharacterSize(250);
-    m_titleText.setFillColor(Color(210, 43, 41));
+    m_titleText.setCharacterSize(300);
+    m_titleText.setFillColor(Color(244,172,200));
     m_titleText.setOutlineColor(Color::White);
-    m_titleText.setOutlineThickness(2);
-    m_titleText.setPosition(150, 140);
+    m_titleText.setOutlineThickness(3.0f);
+    m_titleText.setPosition(550, 140);
     m_titleText.setString("Particles"); //Adds title screen
 
     m_startText.setFont(m_font);
     m_startText.setCharacterSize(60);
     m_startText.setFillColor(Color::White); 
-    m_startText.setPosition(500, 500);
-    m_startText.setString("PRESS ANY KEY TO PLAY!\n\nCREATED BY KARISSA & GABE");
+    m_startText.setPosition(700, 600);
+    m_startText.setString("   PRESS ANY KEY TO PLAY!\n\nCREATED BY KARISSA & GABE");
 
     // bool for titlescreen, true to display, false to dissapear
     m_titleScreen = true;
