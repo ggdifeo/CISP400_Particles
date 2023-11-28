@@ -76,25 +76,25 @@ void Engine::input()
 // update function to update game state
 void Engine::update(float dtAsSeconds)
 {
-    if (!m_titleScreen)
-    {
+   // if (!m_titleScreen)
+  //  {
         // add code here
 
         // loops through particles to update them
-        auto it = m_particles.begin();
-        while (it != m_particles.end())
-        {
-            if (it->getTTL() > 0.0f)
-            {
-                it->update(dtAsSeconds);
-                ++it;
-            }
-            else
-            {
-                it = m_particles.erase(it);
-            }
-        }
-    }
+       // auto it = m_particles.begin();
+      //  while (it != m_particles.end())
+       // {
+       //     if (it->getTTL() > 0.0f)
+       //     {
+       //         it->update(dtAsSeconds);
+       //         ++it;
+       //     }
+        //    else
+        //    {
+        //        it = m_particles.erase(it);
+          //  }
+       // } 
+ //   }
 
     
 }
@@ -116,10 +116,10 @@ void Engine::draw()
         // here add draw code for the engine
 
         // loops through particles and draws them out, i think we've already learned how to add range based for loops but let me know if you wanna do it another way
-        for (const auto& particle : m_particles)
-        {
-            m_Window.draw(particle);
-        } 
+       // for (const auto& particle : m_particles)
+      //  {
+      //      m_Window.draw(particle);
+      //  } 
     }
     
     m_Window.display();
@@ -132,10 +132,10 @@ void Engine::run()
     Clock clock;
 
     // constructs a local particle to be used for unit tests
-    cout << "Starting Particle unit tests..." << endl;
-    Particle p(m_Window, 4, { (int)m_Window.getSize().x / 2, (int)m_Window.getSize().y / 2 });
-    p.unitTests();
-    cout << "Unit tests complete.  Starting engine..." << endl;
+    //cout << "Starting Particle unit tests..." << endl;
+    //Particle p(m_Window, 4, { (int)m_Window.getSize().x / 2, (int)m_Window.getSize().y / 2 });
+    //p.unitTests();
+    //cout << "Unit tests complete.  Starting engine..." << endl;
 
     // here's the game loop
     while (m_Window.isOpen())
