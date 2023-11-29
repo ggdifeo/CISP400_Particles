@@ -5,8 +5,10 @@
 #include <iostream> // added for cout 
 
 // engine constructor
-Engine::Engine() : m_Window(VideoMode(1920, 1080), "Particles!!", Style::Default)
+Engine::Engine()
 {
+    m_Window.create(VideoMode(1920, 1080), "Particles!!", Style::Default);
+
     // loads in the background texture 
     if (!m_backgroundTexture.loadFromFile("background.png"))
     {
