@@ -1,12 +1,15 @@
-// Suggestions:
-// Karissa do you want to organize the functions like this or match exactly to the instructions? I think this looks more sequential but lemme know what you think
+// Project created by Karissa & Gabriel 
+
+//for extra credit: multithreading, different directions for stars, title screen add glitter effect either to the titletext or just around the screen 
 
 #include "Engine.h"
 #include <iostream> // added for cout 
+#include <iterator>
 
 // engine constructor
 Engine::Engine()
 {
+    // creates window 
     m_Window.create(VideoMode(1920, 1080), "Particles!!", Style::Default);
 
     // loads in the background texture 
@@ -78,26 +81,24 @@ void Engine::input()
 
 // update function to update game state
 void Engine::update(float dtAsSeconds)
-{
-   // if (!m_titleScreen)
-  //  {
-        // add code here
-
-        // loops through particles to update them
-       // auto it = m_particles.begin();
-      //  while (it != m_particles.end())
-       // {
-       //     if (it->getTTL() > 0.0f)
-       //     {
-       //         it->update(dtAsSeconds);
-       //         ++it;
-       //     }
-        //    else
-        //    {
-        //        it = m_particles.erase(it);
-          //  }
-       // } 
- //   }
+{ 
+    if (!m_titleScreen)
+    {
+        // So, his instructions say use a for loop 
+	   // I googled the increment and we only need to keep a semi-colon there at end and then it will like re-eval it but won't error out 
+	   for (auto i = m_particles.begin(); i != m_particles.end();)
+		   {
+			   if (i->getTTL() > 0.0)
+			   {
+				   i->update(dtAsSeconds);
+				   i++;
+			   }
+			   else
+			   {
+				   i = m_particles.erase(i);
+			   }
+		   }
+    }
 
     
 }
@@ -116,13 +117,11 @@ void Engine::draw()
     }
     else
     {
-        // here add draw code for the engine
-
-        // loops through particles and draws them out, i think we've already learned how to add range based for loops but let me know if you wanna do it another way
-       // for (const auto& particle : m_particles)
-      //  {
-      //      m_Window.draw(particle);
-      //  } 
+        // loops through particles and draws them out
+        for (Particle particles : m_particles)
+        {
+            m_Window.draw(particles);
+        } 
     }
     
     m_Window.display();
