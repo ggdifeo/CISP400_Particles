@@ -6,7 +6,7 @@ bool Particle::almostEqual(double a, double b, double eps)
 	return fabs(a - b) < eps;
 }
 
-/*void Particle::unitTests()
+void Particle::unitTests()
 {
     int score = 0;
 
@@ -143,4 +143,4 @@ bool Particle::almostEqual(double a, double b, double eps)
     }
 
     cout << "Score: " << score << " / 7" << endl;
-} */
+} 
