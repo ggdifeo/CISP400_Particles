@@ -1,6 +1,9 @@
 #include "Particle.h"
 
+//not sure if im passing m_cartesian plane as an argument correctly, same with m_centerCoordinate in constructor
+
 Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosition)
+    : m_A(2, numPoints)
 {
     // initialize m_ttl with global const TTL
     m_ttl = TTL;
@@ -8,7 +11,7 @@ Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosit
     // initialize m_numPoints with numPoints
     m_numPoints = numPoints;
 
-    // initialize m_radiansPerSe to a random angular velocity in a range of [0:PI]
+    // initialize m_radiansPerSec to a random angular velocity in a range of [0:PI]
     m_radiansPerSec = (float)rand() / RAND_MAX * M_PI;
 
     // initialize m_cartesianPlane
@@ -62,12 +65,48 @@ void Particle::draw(RenderTarget& target, RenderStates states) const
     // assigns it with mapping of m_centerCoordinate from Cartesian to pixel / monitor coordinates using mapCoordsToPixel
     center = target.mapCoordsToPixel(m_centerCoordinate, m_cartesianPlane);
 
+    // assigns lines[0].position with center
+    lines[0].position = center;
+
+    // assigns lines[0].color with m_color
+    lines[0].color = m_color1;
+
+    // loop j from 1 up to and inluding m_numPoints
+    for (int j = 1; j <= m_numPoints; ++j)
+    {
+        // assigns lines[j].position with the coord from column j - 1 in m_A
+        // this is mapped from Cartesian to pixel coords using mapCoordsToPixel
+        lines[j].position = target.mapCoordsToPixel(Vector2f(m_A(0, j - 1), m_A(1, j - 1)));
+
+        // assigns lines[j].color with m_Color2
+        lines[j].color = m_color2;
+    }
     
+    // as soon as the loop is done, draw the VertexArray
+    target.draw(lines);
 }
 
 void Particle::update(float dt)
 {
+    // subtrating dt from m_ttl
+    m_ttl -= dt;
 
+    // call rotate with an angle of dt * m_radiansPerSec
+    rotate(dt * m_radiansPerSec);
+
+    // call scale using the global const SCALE
+    scale(SCALE);
+
+    // calculates how far to shift / translate the particle using distance (dx, dy)
+    float dx = m_vx * dt;
+
+    // vertical velocity changes here due to gravity const G
+    m_vy -= G * dt;
+
+    float dy = m_vy * dt;
+
+    // call translate (dx & dy as arguments)
+    translate(dx, dy); 
 }
 
 bool Particle::almostEqual(double a, double b, double eps)
