@@ -63,7 +63,7 @@ void Particle::draw(RenderTarget& target, RenderStates states) const
     Vector2f center;
 
     // assigns it with mapping of m_centerCoordinate from Cartesian to pixel / monitor coordinates using mapCoordsToPixel
-    center = target.mapCoordsToPixel(m_centerCoordinate, m_cartesianPlane);
+    center = target.mapCoordsToPixel(Vector2f(m_centerCoordinate), m_cartesianPlane);
 
     // assigns lines[0].position with center
     lines[0].position = center;
@@ -76,7 +76,7 @@ void Particle::draw(RenderTarget& target, RenderStates states) const
     {
         // assigns lines[j].position with the coord from column j - 1 in m_A
         // this is mapped from Cartesian to pixel coords using mapCoordsToPixel
-        lines[j].position = target.mapCoordsToPixel(Vector2f(m_A(0, j - 1), m_A(1, j - 1)));
+        lines[j].position = target.mapCoordsToPixel(Vector2f(m_A(0, j - 1), m_A(1, j - 1)), m_cartesianPlane);
 
         // assigns lines[j].color with m_Color2
         lines[j].color = m_color2;
