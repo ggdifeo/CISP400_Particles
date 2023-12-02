@@ -134,10 +134,10 @@ void Engine::run()
     Clock clock;
 
     // constructs a local particle to be used for unit tests
-    //cout << "Starting Particle unit tests..." << endl;
-    //Particle p(m_Window, 4, { (int)m_Window.getSize().x / 2, (int)m_Window.getSize().y / 2 });
-    //p.unitTests();
-    //cout << "Unit tests complete.  Starting engine..." << endl;
+    cout << "Starting Particle unit tests..." << endl;
+    Particle p(m_Window, 4, { (int)m_Window.getSize().x / 2, (int)m_Window.getSize().y / 2 });
+    p.unitTests();
+    cout << "Unit tests complete.  Starting engine..." << endl;
 
     // here's the game loop
     while (m_Window.isOpen())
