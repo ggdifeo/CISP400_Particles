@@ -126,7 +126,7 @@ void Engine::input()
         }
         if (event.type == Event::KeyPressed && event.key.code == Keyboard::T && !m_titleScreen)
         {
-            cout << "Changing theme from" << m_currentTheme;
+            cout << "Changing theme from " << m_currentTheme;
 
             m_currentTheme = (m_currentTheme + 1) % 5; // change 5 to add to the total number of themes
 
