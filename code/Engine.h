@@ -35,6 +35,7 @@ private:
 
 	// added so themes can be changed
 	int m_currentTheme;
+	Color m_currentThemeColor;
 
 public:
 	// The Engine constructor

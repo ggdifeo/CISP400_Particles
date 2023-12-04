@@ -26,7 +26,7 @@ public:
     
     // getter function for m_color2 for themes
     Color getColor() const { return m_color2; }
-    void setColor(const Color& currentColor) { m_color2 = currentColor; }
+    void setColor(const Color& currentThemeColor) { m_color2 = currentThemeColor; }
 
 private:
     	float m_ttl;

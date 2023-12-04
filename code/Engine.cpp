@@ -72,8 +72,8 @@ void Engine::input()
             {
                 int numPoints = rand() % (50 - 25 - 1) + 25;
                 Vector2i mouseCoords = Mouse::getPosition(m_Window);
-
                 Particle particleDisplayLoc(m_Window, numPoints, mouseCoords);
+                particleDisplayLoc.setColor(m_currentThemeColor);
                 m_particles.push_back(particleDisplayLoc);
             }
         }
@@ -86,44 +86,42 @@ void Engine::input()
                 int numPoints = rand() % (50 - 25 - 1) + 25;
                 Vector2i mouseCoords = Mouse::getPosition(m_Window);
                 Particle particleDisplayLoc(m_Window, numPoints, mouseCoords);
+                particleDisplayLoc.setColor(m_currentThemeColor);
                 m_particles.push_back(particleDisplayLoc);
             }
         }
 
         if (event.type == Event::KeyPressed && event.key.code == Keyboard::T)
         {
-            m_currentTheme = (m_currentTheme + 1) % 4; // change 3 to add to total num of themes
-
-            Color currentColor = m_particles[0].getColor();
+            m_currentTheme = (m_currentTheme + 1) % 5; // change 3 to add to total num of themes
 
             switch(m_currentTheme)
             {
                 // winter theme
                 case 0:
-                    currentColor = Color(200, 170, 203);
+                    m_currentThemeColor = Color(200, 170, 203);
                     break;
                 //spring (cherry blossom) theme
                 case 1:
-                    currentColor = Color(243, rand() % 207, 180);
+                    m_currentThemeColor = Color(243, rand() % 207, 180);
                     break;
                 //summer theme
                 case 2:
-                    currentColor = Color(255, 200, 100);
+                    m_currentThemeColor = Color(255, 200, 100);
                     break;
                 //fall theme
                 case 3:
-                    currentColor = Color(152, 72, 43);
+                    m_currentThemeColor = Color(152, 72, 43);
                     break;
                 // back to default theme
                 case 4:
-                    currentColor = Color(rand() % 256, rand() % 256, rand() % 256);
+                    m_currentThemeColor = Color(rand() % 256, rand() % 256, rand() % 256);
                     break;
             }
-
-             //sets theme to all particles 
+            //sets theme to all current particles 
             for (auto& particle : m_particles)
             {
-                particle.setColor(currentColor);
+                particle.setColor(m_currentThemeColor);
             }
         }
     }
@@ -160,6 +158,11 @@ Do not increment the iterator (if you do you might increment past the end of the
 				   i = m_particles.erase(i);
 			   }
 		   }
+        //sets theme to new particles 
+        for (auto& particle : m_particles)
+        {
+            particle.setColor(m_currentThemeColor);
+        }
    }
 }
 
