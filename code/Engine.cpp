@@ -9,8 +9,9 @@
 using namespace std;
 
 // engine constructor
-Engine::Engine() : m_Window(VideoMode(1920, 1080), "Particles!!", Style::Default), m_currentTheme(0)
+Engine::Engine() : m_Window(VideoMode(1920, 1080), "Particles!!", Style::Default)
 {
+    m_currentThemeColor = (Color::Blue);
     // loads in the background texture 
     if (!m_backgroundTexture.loadFromFile("background.png"))
     {
@@ -78,7 +79,6 @@ void Engine::input()
             }
         }
 
-
         if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left)
         {
             for (int i = 0; i < 5; i++)
@@ -93,29 +93,29 @@ void Engine::input()
 
         if (event.type == Event::KeyPressed && event.key.code == Keyboard::T)
         {
-            m_currentTheme = (m_currentTheme + 1) % 5; // change 3 to add to total num of themes
+            m_currentTheme = (m_currentTheme + 1) % 5; // change 5 to add to total num of themes
 
             switch(m_currentTheme)
             {
-                // winter theme
+                // default theme
                 case 0:
-                    m_currentThemeColor = Color(200, 170, 203);
+                    m_currentThemeColor = Color(rand() % 256, rand() % 256, rand() % 256);
                     break;
-                //spring (cherry blossom) theme
+                // winter theme
                 case 1:
+                    m_currentThemeColor = Color(186, 219, 255);
+                    break;
+                // spring (cherry blossom) theme
+                case 2:
                     m_currentThemeColor = Color(243, rand() % 207, 180);
                     break;
-                //summer theme
-                case 2:
+                // summer theme
+                case 3:
                     m_currentThemeColor = Color(255, 200, 100);
                     break;
-                //fall theme
-                case 3:
-                    m_currentThemeColor = Color(152, 72, 43);
-                    break;
-                // back to default theme
+                // fall theme
                 case 4:
-                    m_currentThemeColor = Color(rand() % 256, rand() % 256, rand() % 256);
+                    m_currentThemeColor = Color(152, 72, 43);
                     break;
             }
             //sets theme to all current particles 
