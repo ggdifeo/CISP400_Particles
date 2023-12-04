@@ -1,17 +1,16 @@
-// Project created by Karissa & Gabriel 
-
-//for extra credit: multithreading, different directions for stars, title screen add glitter effect either to the titletext or just around the screen 
+// Suggestions:
+// Karissa do you want to organize the functions like this or match exactly to the instructions? I think this looks more sequential but lemme know what you think
+// Gabe -> I think the functions look fine, we just want to make sure it's readable for the professor // this should be okay
 
 #include "Engine.h"
 #include <iostream> // added for cout 
+#include "Particle.h"
 #include <iterator>
+using namespace std;
 
 // engine constructor
-Engine::Engine()
+Engine::Engine() : m_Window(VideoMode(1920, 1080), "Particles!!", Style::Default), m_currentTheme(0)
 {
-    // creates window 
-    m_Window.create(VideoMode(1920, 1080), "Particles!!", Style::Default);
-
     // loads in the background texture 
     if (!m_backgroundTexture.loadFromFile("background.png"))
     {
@@ -34,6 +33,7 @@ Engine::Engine()
     m_text.setCharacterSize(60); //Sets m_text size
     m_text.setFillColor(Color::White); //Sets m_text color
     m_text.setPosition(10, 10); //Positions m_text
+    m_text.setString("PRESS 'T' TO CHANGE THEME");
     
     m_titleText.setFont(m_font);
     m_titleText.setCharacterSize(300);
@@ -41,7 +41,7 @@ Engine::Engine()
     m_titleText.setOutlineColor(Color::White);
     m_titleText.setOutlineThickness(3.0f);
     m_titleText.setPosition(550, 140);
-    m_titleText.setString("Particles"); //Adds title screen
+    m_titleText.setString("PARTICLES"); //Adds title screen
 
     m_startText.setFont(m_font);
     m_startText.setCharacterSize(60);
@@ -53,38 +53,100 @@ Engine::Engine()
     m_titleScreen = true;
 }
 
-// input function to handle user input
+
 void Engine::input()
 {
     Event event;
-	while (m_Window.pollEvent(event))
-	{
-        if (event.type == Event::Closed)
+    while (m_Window.pollEvent(event))
+    {
+        if (event.type == Event::Closed || Keyboard::isKeyPressed(Keyboard::Escape))
         {
-		    // quit the game when the window is closed
-			m_Window.close();
-        }
-			
-        // exits title screen ONLY if user presses a key (NO CLICKY)
-        if (event.type == Event::KeyPressed && m_titleScreen) 
-        {
-            m_titleScreen = false;
+            m_Window.close();
         }
 
-        // If you press escape it exits the game
-        if (Keyboard::isKeyPressed(Keyboard::Escape))
-		{
-			m_Window.close();
-		}
+        // exits title screen ONLY if user presses a key (NO CLICKY)
+        if (event.type == Event::KeyPressed && m_titleScreen)
+        {
+            m_titleScreen = false;
+            for (int i = 0; i < 5; i++)
+            {
+                int numPoints = rand() % (50 - 25 - 1) + 25;
+                Vector2i mouseCoords = Mouse::getPosition(m_Window);
+
+                Particle particleDisplayLoc(m_Window, numPoints, mouseCoords);
+                m_particles.push_back(particleDisplayLoc);
+            }
+        }
+
+
+        if (event.type == Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                int numPoints = rand() % (50 - 25 - 1) + 25;
+                Vector2i mouseCoords = Mouse::getPosition(m_Window);
+                Particle particleDisplayLoc(m_Window, numPoints, mouseCoords);
+                m_particles.push_back(particleDisplayLoc);
+            }
+        }
+
+        if (event.type == Event::KeyPressed && event.key.code == Keyboard::T)
+        {
+            m_currentTheme = (m_currentTheme + 1) % 4; // change 3 to add to total num of themes
+
+            Color currentColor = m_particles[0].getColor();
+
+            switch(m_currentTheme)
+            {
+                // winter theme
+                case 0:
+                    currentColor = Color(200, 170, 203);
+                    break;
+                //spring (cherry blossom) theme
+                case 1:
+                    currentColor = Color(243, rand() % 207, 180);
+                    break;
+                //summer theme
+                case 2:
+                    currentColor = Color(255, 200, 100);
+                    break;
+                //fall theme
+                case 3:
+                    currentColor = Color(152, 72, 43);
+                    break;
+                // back to default theme
+                case 4:
+                    currentColor = Color(rand() % 256, rand() % 256, rand() % 256);
+                    break;
+            }
+
+             //sets theme to all particles 
+            for (auto& particle : m_particles)
+            {
+                particle.setColor(currentColor);
+            }
+        }
     }
 }
 
-// update function to update game state
+
 void Engine::update(float dtAsSeconds)
-{ 
-    if (!m_titleScreen)
-    {
-        // So, his instructions say use a for loop 
+/*The general idea here is to loop through m_particles and call update on each Particle in the vector whose ttl (time to live) has not expired
+If a particle's ttl has expired, it must be erased from the vector
+This is best done with an iterator-based for-loop
+Don't automatically increment the iterator for each iteration
+if getTTL() > 0.0
+Call update on that Particle
+increment the iterator
+else
+erase the element the iterator points to
+erase returns an iterator that points to the next element after deletion, or end if it is the end of the vector
+Assign the iterator to this return value
+Do not increment the iterator (if you do you might increment past the end of the vector after you delete the last element)*/
+{
+   if (!m_titleScreen)
+   {
+	   // So, his instructions say use a for loop 
 	   // I googled the increment and we only need to keep a semi-colon there at end and then it will like re-eval it but won't error out 
 	   for (auto i = m_particles.begin(); i != m_particles.end();)
 		   {
@@ -98,12 +160,8 @@ void Engine::update(float dtAsSeconds)
 				   i = m_particles.erase(i);
 			   }
 		   }
-    }
-
-    
+   }
 }
-
-// draw function to draw out the program
 
 void Engine::draw()
 {
@@ -115,47 +173,37 @@ void Engine::draw()
         m_Window.draw(m_titleText);
         m_Window.draw(m_startText);
     }
+
+
     else
     {
-        // loops through particles and draws them out
-        for (Particle particles : m_particles)
+        m_Window.draw(m_text);
+
+        for (Particle particle : m_particles)
         {
-            m_Window.draw(particles);
+                m_Window.draw(particle);
         } 
     }
-    
     m_Window.display();
 }
 
 // run function to run program loop
 void Engine::run()
 {
-    // constructs the clock object to track time per frame
     Clock clock;
 
-    // constructs a local particle to be used for unit tests
     cout << "Starting Particle unit tests..." << endl;
     Particle p(m_Window, 4, { (int)m_Window.getSize().x / 2, (int)m_Window.getSize().y / 2 });
     p.unitTests();
     cout << "Unit tests complete.  Starting engine..." << endl;
 
-    // here's the game loop
     while (m_Window.isOpen())
     {
-        // restarts the clock which returns the time elapsed since the last frame
         Time dt = clock.restart();
 
-        // converts clock time into seconds
         float dtAsSeconds = dt.asSeconds();
-
-        // calls input function
         input();
-
-        // calls update function
         update(dtAsSeconds);
-
-        // calls draw function
         draw();
     }
 }
-

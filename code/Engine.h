@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 #include <SFML/Graphics.hpp>
 #include "Particle.h"
 using namespace sf;
@@ -33,6 +32,9 @@ private:
 	// added background texture / sprite for displaying background image (sprite)
 	Texture m_backgroundTexture;
 	Sprite m_backgroundSprite;
+
+	// added so themes can be changed
+	int m_currentTheme;
 
 public:
 	// The Engine constructor
