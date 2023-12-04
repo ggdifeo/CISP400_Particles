@@ -1,6 +1,6 @@
 #include "Particle.h"
 
-void Particle::setColor(const Color& currentThemeColor)
+void Particle::setColor(const Color& currentThemeColor) //const makes sure variable isn't modified & we want to pass by reference for efficiency
 {
     m_color2 = currentThemeColor;
 }
