@@ -1,5 +1,10 @@
 #include "Particle.h"
 
+void Particle::setColor(const Color& currentThemeColor)
+{
+    m_color2 = currentThemeColor;
+}
+
 bool Particle::almostEqual(double a, double b, double eps)
 {
 	return fabs(a - b) < eps;
@@ -30,7 +35,7 @@ Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosit
     // 255 200 100 for spring green
     // 243 rand() % 207, 180) for pink pink fun 
     
-	//m_color2 = Color(rand() % 256, rand() % 256, rand() % 256);
+	m_color2 = Color(rand() % 256, rand() % 256, rand() % 256);
 
 	float theta = ((float)rand() / RAND_MAX) * M_PI / 2.0;
 	float dTheta = ((2 * M_PI) / (numPoints - 1)); 

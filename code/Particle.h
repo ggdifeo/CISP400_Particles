@@ -24,9 +24,8 @@ public:
     	bool almostEqual(double a, double b, double eps = 0.0001);
     	void unitTests();
     
-    // getter function for m_color2 for themes
-    Color getColor() const { return m_color2; }
-    void setColor(const Color& currentThemeColor) { m_color2 = currentThemeColor; }
+    // sets color for themes
+    void setColor(const Color& currentThemeColor);
 
 private:
     	float m_ttl;

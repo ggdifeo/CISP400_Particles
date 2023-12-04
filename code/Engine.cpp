@@ -8,10 +8,19 @@
 #include <iterator>
 using namespace std;
 
+enum Theme 
+{
+    RAINBOW,
+    WINTER,
+    SUMMER,
+    SPRING,
+    FALL
+
+};
+
 // engine constructor
 Engine::Engine() : m_Window(VideoMode(1920, 1080), "Particles!!", Style::Default)
 {
-    m_currentThemeColor = (Color::Blue);
     // loads in the background texture 
     if (!m_backgroundTexture.loadFromFile("background.png"))
     {
@@ -74,7 +83,6 @@ void Engine::input()
                 int numPoints = rand() % (50 - 25 - 1) + 25;
                 Vector2i mouseCoords = Mouse::getPosition(m_Window);
                 Particle particleDisplayLoc(m_Window, numPoints, mouseCoords);
-                particleDisplayLoc.setColor(m_currentThemeColor);
                 m_particles.push_back(particleDisplayLoc);
             }
         }
@@ -86,44 +94,44 @@ void Engine::input()
                 int numPoints = rand() % (50 - 25 - 1) + 25;
                 Vector2i mouseCoords = Mouse::getPosition(m_Window);
                 Particle particleDisplayLoc(m_Window, numPoints, mouseCoords);
-                particleDisplayLoc.setColor(m_currentThemeColor);
                 m_particles.push_back(particleDisplayLoc);
             }
         }
-
         if (event.type == Event::KeyPressed && event.key.code == Keyboard::T)
         {
-            m_currentTheme = (m_currentTheme + 1) % 5; // change 5 to add to total num of themes
+            m_currentTheme = (m_currentTheme + 1) % 5; // change 5 to add to the total number of themes
 
-            switch(m_currentTheme)
+            for (int i = 0; i < 5; i++)
             {
-                // default theme
-                case 0:
-                    m_currentThemeColor = Color(rand() % 256, rand() % 256, rand() % 256);
-                    break;
-                // winter theme
-                case 1:
-                    m_currentThemeColor = Color(186, 219, 255);
-                    break;
-                // spring (cherry blossom) theme
-                case 2:
-                    m_currentThemeColor = Color(243, rand() % 207, 180);
-                    break;
-                // summer theme
-                case 3:
-                    m_currentThemeColor = Color(255, 200, 100);
-                    break;
-                // fall theme
-                case 4:
-                    m_currentThemeColor = Color(152, 72, 43);
-                    break;
+                int numPoints = rand() % (50 - 25 - 1) + 25;
+                Vector2i mouseCoords = Mouse::getPosition(m_Window);
+                Particle particleDisplayLoc(m_Window, numPoints, mouseCoords);
+
+                // switches the particle color based on the current theme
+                switch (m_currentTheme)
+                {
+                    case RAINBOW:
+                        particleDisplayLoc.setColor(Color(rand() % 256, rand() % 256, rand() % 256));
+                        break;
+                    case WINTER:
+                        particleDisplayLoc.setColor(Color(186, 219, 255));
+                        break;
+                    case SPRING:
+                        particleDisplayLoc.setColor(Color(243, rand() % 207, 180));
+                        break;
+                    case SUMMER:
+                        particleDisplayLoc.setColor(Color(255, 200, 100));
+                        break;
+                    case FALL:
+                        particleDisplayLoc.setColor(Color(152, 72, 43));
+                        break;
+                }
+
+                m_particles.push_back(particleDisplayLoc);
             }
-            //sets theme to all current particles 
-            for (auto& particle : m_particles)
-            {
-                particle.setColor(m_currentThemeColor);
-            }
+    
         }
+
     }
 }
 
@@ -158,10 +166,28 @@ Do not increment the iterator (if you do you might increment past the end of the
 				   i = m_particles.erase(i);
 			   }
 		   }
-        //sets theme to new particles 
+
+        //sets theme to new particles (this actually updates the particles)
         for (auto& particle : m_particles)
-        {
-            particle.setColor(m_currentThemeColor);
+        {   
+            switch (m_currentTheme)
+            {
+                case RAINBOW:
+                    particle.setColor(Color(rand() % 256, rand() % 256, rand() % 256));
+                    break;
+                case WINTER:
+                    particle.setColor(Color(186, 219, 255));
+                    break;
+                case SPRING:
+                    particle.setColor(Color(243, rand() % 207, 180));
+                    break;
+                case SUMMER:
+                    particle.setColor(Color(255, 200, 100));
+                    break;
+                case FALL:
+                    particle.setColor(Color(152, 72, 43));
+                    break;
+            }
         }
    }
 }
