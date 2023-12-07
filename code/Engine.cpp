@@ -1,3 +1,5 @@
+// CREDITS: CREATED BY GABRIEL DIFEO AND KARISSA MERRILL 
+
 // Suggestions:
 // Karissa do you want to organize the functions like this or match exactly to the instructions? I think this looks more sequential but lemme know what you think
 // Gabe -> I think the functions look fine, we just want to make sure it's readable for the professor // this should be okay
